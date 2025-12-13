@@ -1,49 +1,22 @@
 import streamlit as st
-st.title("Debug Mode 2.0")
-st.write("Starting app...")
+import numpy as np
+import tensorflow as tf
+from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
+import pandas as pd
+import pickle
 
-try:
-    st.write("Importing os...")
-    import os
-    st.write(f"CWD: {os.getcwd()}")
-    st.write(f"Files: {os.listdir('.')}")
+##Load the trained model
+model= tf.keras.models.load_model('model.h5')
 
-    st.write("Importing numpy...")
-    import numpy as np
+##load the encoder and scaler
+with open('onehot_encoder_geo.pkl','rb') as file:
+    onehot_encoder_geo=pickle.load(file)
 
-    st.write("Importing pandas...")
-    import pandas as pd
+with open('label_encoder_gender.pkl','rb') as file:
+    label_encoder_gender=pickle.load(file)
 
-    st.write("Importing sklearn...")
-    from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
-    
-    st.write("Importing pickle...")
-    import pickle
-
-    st.write("Importing tensorflow (this might be slow)...")
-    import tensorflow as tf
-    st.write(f"TensorFlow version: {tf.__version__}")
-
-    ##Load the trained model
-    st.write("Loading model.h5...")
-    model= tf.keras.models.load_model('model.h5')
-    st.write("Model loaded successfully.")
-
-    ##load the encoder and scaler
-    st.write("Loading pickles...")
-    with open('onehot_encoder_geo.pkl','rb') as file:
-        onehot_encoder_geo=pickle.load(file)
-
-    with open('label_encoder_gender.pkl','rb') as file:
-        label_encoder_gender=pickle.load(file)
-
-    with open('scaler.pkl','rb') as file:
-        scaler=pickle.load(file)
-    st.write("Pickles loaded successfully.")
-
-except Exception as e:
-    st.error(f"CRITICAL ERROR: {e}")
-    st.stop()
+with open('scaler.pkl','rb') as file:
+    scaler=pickle.load(file)
 
 ##streamlit app
 st.title('Customer Churn Prediciton')
