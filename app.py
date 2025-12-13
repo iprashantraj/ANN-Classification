@@ -1,22 +1,33 @@
 import streamlit as st
-import numpy as np
-import tensorflow as tf
-from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
-import pandas as pd
-import pickle
 
-##Load the trained model
-model= tf.keras.models.load_model('model.h5')
+try:
+    import numpy as np
+    import tensorflow as tf
+    from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
+    import pandas as pd
+    import pickle
+    import os
 
-##load the encoder and scaler
-with open('onehot_encoder_geo.pkl','rb') as file:
-    onehot_encoder_geo=pickle.load(file)
+    # Debug: Check current working directory and file existence
+    st.write(f"Current Working Directory: {os.getcwd()}")
+    st.write("Files in directory:")
+    st.write(os.listdir('.'))
 
-with open('label_encoder_gender.pkl','rb') as file:
-    label_encoder_gender=pickle.load(file)
+    ##Load the trained model
+    model= tf.keras.models.load_model('model.h5')
 
-with open('scaler.pkl','rb') as file:
-    scaler=pickle.load(file)
+    ##load the encoder and scaler
+    with open('onehot_encoder_geo.pkl','rb') as file:
+        onehot_encoder_geo=pickle.load(file)
+
+    with open('label_encoder_gender.pkl','rb') as file:
+        label_encoder_gender=pickle.load(file)
+
+    with open('scaler.pkl','rb') as file:
+        scaler=pickle.load(file)
+except Exception as e:
+    st.error(f"An error occurred during initialization: {e}")
+    st.stop()
 
 ##streamlit app
 st.title('Customer Churn Prediciton')
