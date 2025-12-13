@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-tensorflow
-pandas
-numpy
-scikit-learn
-tensorboard
-matplotlib
-
-streamlit
-=======
 tensorflow==2.15.0
 pandas
 numpy
@@ -15,13 +5,5 @@ scikit-learn
 tensorboard
 matplotlib
 streamlit
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> a984e26 (Clean commit: add app.py, .gitignore, runtime.txt)
-=======
-keras
->>>>>>> 34fa493 (done)
-=======
 scikeras
->>>>>>> 1991f29 (done)
 
