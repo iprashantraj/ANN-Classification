@@ -1,9 +1,6 @@
-tensorflow==2.15.0
+tensorflow-cpu
 pandas
 numpy
 scikit-learn
-tensorboard
-matplotlib
 streamlit
-scikeras
 
