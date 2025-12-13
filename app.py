@@ -1,22 +1,36 @@
 import streamlit as st
+st.title("Debug Mode")
+st.write("Starting app...")
 
 try:
-    import numpy as np
-    import tensorflow as tf
-    from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
-    import pandas as pd
-    import pickle
+    st.write("Importing os...")
     import os
+    st.write(f"CWD: {os.getcwd()}")
+    st.write(f"Files: {os.listdir('.')}")
 
-    # Debug: Check current working directory and file existence
-    st.write(f"Current Working Directory: {os.getcwd()}")
-    st.write("Files in directory:")
-    st.write(os.listdir('.'))
+    st.write("Importing numpy...")
+    import numpy as np
+
+    st.write("Importing pandas...")
+    import pandas as pd
+
+    st.write("Importing sklearn...")
+    from sklearn.preprocessing import StandardScaler,LabelEncoder,OneHotEncoder
+    
+    st.write("Importing pickle...")
+    import pickle
+
+    st.write("Importing tensorflow (this might be slow)...")
+    import tensorflow as tf
+    st.write(f"TensorFlow version: {tf.__version__}")
 
     ##Load the trained model
+    st.write("Loading model.h5...")
     model= tf.keras.models.load_model('model.h5')
+    st.write("Model loaded successfully.")
 
     ##load the encoder and scaler
+    st.write("Loading pickles...")
     with open('onehot_encoder_geo.pkl','rb') as file:
         onehot_encoder_geo=pickle.load(file)
 
@@ -25,8 +39,10 @@ try:
 
     with open('scaler.pkl','rb') as file:
         scaler=pickle.load(file)
+    st.write("Pickles loaded successfully.")
+
 except Exception as e:
-    st.error(f"An error occurred during initialization: {e}")
+    st.error(f"CRITICAL ERROR: {e}")
     st.stop()
 
 ##streamlit app
