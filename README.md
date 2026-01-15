@@ -1,5 +1,4 @@
 # Churn Prediction
-https://ann-classification-churn-123.streamlit.app/
+https://ann-classification-churn-prashant.streamlit.app/
 # Salary Predcition
-https://salary-regresssion.streamlit.app/
- 
+https://salary-regresssion-prashant.streamlit.app/
