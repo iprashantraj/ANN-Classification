@@ -36,9 +36,9 @@ st.title("Customer Churn Prediction")
 geography = st.selectbox("Geography", onehot_encoder_geo.categories_[0])
 gender = st.selectbox("Gender", label_encoder_gender.classes_)
 age = st.slider("Age", 18, 92)
-balance = st.number_input("Balance")
-credit_score = st.number_input("Credit Score")
-estimated_salary = st.number_input("Estimated Salary")
+balance = st.number_input("Balance", value=0.0)
+credit_score = st.number_input("Credit Score", value=600)
+estimated_salary = st.number_input("Estimated Salary", value=50000.0)
 tenure = st.slider("Tenure", 0, 10)
 num_of_products = st.slider("Number of Products", 1, 4)
 has_cr_card = st.selectbox("Has Credit Card", [0, 1])
@@ -49,6 +49,7 @@ is_active_member = st.selectbox("Is Active Member", [0, 1])
 # -----------------------------
 if st.button("Predict"):
 
+    # Base numerical input
     input_data = pd.DataFrame({
         "CreditScore": [credit_score],
         "Gender": [label_encoder_gender.transform([gender])[0]],
@@ -61,23 +62,36 @@ if st.button("Predict"):
         "EstimatedSalary": [estimated_salary]
     })
 
-    # One-hot encode Geography
+    # -----------------------------
+    # One-hot encode Geography (FIXED)
+    # -----------------------------
     geo_encoded = onehot_encoder_geo.transform([[geography]])
+
+    # Convert sparse → dense if needed
+    if hasattr(geo_encoded, "toarray"):
+        geo_encoded = geo_encoded.toarray()
+
+    geo_feature_names = onehot_encoder_geo.get_feature_names_out()
+
     geo_encoded_df = pd.DataFrame(
         geo_encoded,
-        columns=onehot_encoder_geo.get_feature_names_out(["Geography"])
+        columns=geo_feature_names
     )
 
-    # Combine
-    final_input = pd.concat(
-        [input_data.reset_index(drop=True), geo_encoded_df],
-        axis=1
-    )
+    # Align index
+    geo_encoded_df.index = input_data.index
 
+    # Combine all features
+    final_input = pd.concat([input_data, geo_encoded_df], axis=1)
+
+    # -----------------------------
     # Scale
+    # -----------------------------
     final_input_scaled = scaler.transform(final_input)
 
+    # -----------------------------
     # Predict
+    # -----------------------------
     prediction = model.predict(final_input_scaled)
     prediction_proba = float(prediction[0][0])
 
